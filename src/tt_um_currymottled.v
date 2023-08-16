@@ -11,9 +11,9 @@ module tt_um_currymottled
 );
 
     // 8-bit Adder Logic (combinational part)
-    wire [7:0] sum;       // Sum of ui_in and uio_in
-    assign sum = ui_in + uio_in;
-
+    reg [7:0] sum;       // Sum of ui_in and uio_in
+    assign uio_out = sum; // Assign the sum to the output
+    
     // Configure uio_oe to set the uio_in as inputs (active low)
     assign uio_oe = 8'b0;
 
@@ -22,7 +22,7 @@ module tt_um_currymottled
         if (!rst_n) begin
             uo_out <= 8'b0; // Synchronous reset
         end else if (ena) begin
-            uo_out <= sum;  // Capture the sum if enabled
+            sum <= ui_in + uio_in;  // Capture the sum if enabled
         end
     end
 
