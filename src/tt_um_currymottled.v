@@ -9,21 +9,49 @@ module tt_um_currymottled
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
+    
+    //Registers
+    //I2C communication for changing the PID constants will take input/output lines.
+    reg [5:0] e;        // Error.
+    
+    //Wires
+    wire [5:0] K_p, K_i, K_d; //PID constants.
+    wire [5:0] p_contrib, i_contrib, d_contrib; //PID contributions.
+    wire [5:0] u;             // Control variable.
 
-    // 8-bit Adder Logic (combinational part)
-    reg [7:0] sum;       // Sum of ui_in and uio_in
-    assign uio_out = sum; // Assign the sum to the output
+    assign u = p_contrib + i_contrib + d_contrib;
+    //The chip output is the control.
+    assign uio_out = u;
     
     // Configure uio_oe to set the uio_in as inputs (active low)
     assign uio_oe = 8'b0;
-
-    // Clocked Adder Logic with Synchronous Reset
+    // Reset
     always @(posedge clk) begin
         if (!rst_n) begin
-            uo_out <= 8'b0; // Synchronous reset
-        end else if (ena) begin
-            sum <= ui_in + uio_in;  // Capture the sum if enabled
-        end
-    end
+            uo_out <= 0;
+        end 
+    end 
+// Module Instantiation 
+    ProportionalMultiplier P_ins(
+        .clk(clk),
+        .rst_n(rst_n),
+        .ena(ena),
+        .K_p(K_p),
+        .e(e),
+        .p_contrib(p_contrib));
+    Integrator             I_ins(
+        .clk(clk),
+        .rst_n(rst_n),
+        .ena(ena),
+        .e(e),
+        .K_i(K_i),
+        .i_contrib(i_contrib));
+    Differentiator         D_ins(
+        .clk(clk),
+        .rst_n(rst_n),
+        .ena(ena),
+        .e(e),
+        .K_d(K_d),
+        .d_contrib(d_contrib));   
 
 endmodule
