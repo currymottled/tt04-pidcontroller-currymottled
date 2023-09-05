@@ -1,18 +1,24 @@
 `timescale 1ns / 1ps
+/*
+This uses a standard frame without "bells and whistles". 
+
+The device register frame is 7 bit, and the register and data
+frames are 8 bit.
+*/
+
 
 module I2C_slave(
     input            clk, rst_n, ena,
     input            SCL_in, SDA_in,
-    output reg       SCL_out, SDA_out,
-    output reg       SCL_ena, SDA_ena,
-    output reg [5:0] update_value, read_value,
+    output reg [5:0] update_value,
     output reg [7:0] reg_addr, // addr[2:1] is 00 for P, 01 for I, and 10 for D. addr[0] is the ack bit.
+    output reg [2:0] reg_index, data_index,
     output reg [4:0] state
     );
     
     reg       read_or_write; // This stores the read/write bit.
     reg [6:0] device_addr;
-    reg [2:0] addr_index, reg_index, data_index; // The indices are 7-8 bit.
+    reg [2:0] addr_index;
     
     parameter DEVICE_ADDRESS = 7'b0110_011; // A made up placeholder.
     parameter K_p_ADDRESS = 8'b0000_0000;
@@ -95,8 +101,7 @@ module I2C_slave(
 					else state <= IDLE; // If the data was not read, the process should be reset. 
                 end
                 READ: begin
-                    //The values are read in at the section on register reading.
-                	SDA_out <= read_value[data_index];
+                    //The read out is handled by signal logic.
 					if (data_index == 0) begin
 					   state <= READ_ACK;
 					   data_index <= 7;

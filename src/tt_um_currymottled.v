@@ -9,16 +9,19 @@ module tt_um_currymottled
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );  
- 
+    // PID wires
+    wire [5:0] K_p, K_i, K_d;
     wire [5:0] u, e; //  These use the same lines, so they need to be synchronized and buffered.
+    // I2C wires
+    wire SCL_in, SCL_out, SDA_in, SDA_out, SCL_ena, SDA_ena; 
     PID                  PID(
         .clk(clk),
         .rst_n(rst_n),
         .ena(ena),
         .e(e),
-        .p_contrib(p_contrib),
-        .i_contrib(i_contrib),
-        .d_contrib(d_contrib),
+        .K_p(K_p),
+        .K_i(K_i),
+        .K_d(K_d),
         .u(u)
         );     
     I2C_param_config     I2C_Interface(
@@ -26,19 +29,20 @@ module tt_um_currymottled
         .rst_n(rst_n),
         .ena(ena),
         .SCL_in(SCL_in),
-        .SCL_out(SCL_out),
-        .SCL_ena(SCL_ena),
         .SDA_in(SDA_in),
+        .SCL_out(SCL_out),
         .SDA_out(SDA_out),
+        .SCL_ena(SCL_ena),
         .SDA_ena(SDA_ena),
         .K_p(K_p),
         .K_i(K_i),
-        .K_d(K_d)       
+        .K_d(K_d)
         ); 
     // Input/Output
     
     // I2C
-    assign uio_in [1:0] = {SDA_in, SCL_in};
+    assign SDA_in = uio_in[1];
+    assign SCL_in = uio_in[0];
     assign uio_out[1:0] = {SDA_out, SCL_out};
     assign uio_oe [1:0] = {SDA_ena, SCL_ena};    
     // PID - Read when clk is high, write when clk is low. 

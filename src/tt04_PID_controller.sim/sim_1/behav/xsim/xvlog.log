@@ -1,4 +1,0 @@
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/MGVas/Xilinx Projects/ENEL 453/tt04-pidcontroller/tt04-pidcontroller-currymottled/src/RepeatedAdder.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module RepeatedAdder
-INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/MGVas/Xilinx Projects/ENEL 453/tt04-pidcontroller/tt04-pidcontroller-currymottled/src/tb/RepeatedAdder_tb.v" into library xil_defaultlib
-INFO: [VRFC 10-311] analyzing module RepeatedAdder_tb

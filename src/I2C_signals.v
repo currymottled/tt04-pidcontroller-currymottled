@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 /*
-This handles the I2C signals on the negative half cycle of the clock line, depending 
-on slave state, mostly write and read enables for ACK bits and reading in data.
+This handles enables and out signals, mostly write enables for ACKs etc.
+on the negative edge of the clock.
 
 "Write" means "read in and write to a register", not "write to the master". 
 "Read" means "read out to the master".
@@ -11,7 +11,9 @@ on slave state, mostly write and read enables for ACK bits and reading in data.
 module I2C_signals(
     input             clk, rst_n, ena,
     input  wire [4:0] state,
-    input  wire       SCL_in, SDA_in, 
+    input  wire [5:0] read_value,
+    input  wire [2:0] data_index,
+    input  wire       SCL_in,
     output reg        SCL_out, SDA_out, 
     output reg        SCL_ena, SDA_ena // These are connected to the enable path of the chip.
     );
@@ -41,6 +43,16 @@ module I2C_signals(
             SDA_ena <= 0;      
         end
     end
+    always @ (posedge SCL_in) begin
+        if (ena) begin
+            case(state)
+                READ: begin
+                    SDA_out <= read_value[data_index]; 
+                end
+            endcase
+        end 
+    end
+    
     // Signal Logic    
     always @ (negedge SCL_in) begin
         if (ena) begin

@@ -7,8 +7,7 @@ module Differentiator(
     output wire [5:0] d_contrib //Differentiator contribution.
     );
     reg [5:0] e_prior; // More "history" values can be used for a better approximations.
-    reg [5:0] e_diff;
-    reg [5:0] i;       
+    reg [5:0] e_diff;    
     
     // Multiplication takes too much physical space.
     // Repeated addition takes too much file

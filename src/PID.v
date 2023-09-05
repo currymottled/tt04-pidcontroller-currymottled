@@ -6,21 +6,20 @@
 module PID(
     input  wire       clk, rst_n, ena,
     input  wire [5:0] e,
-    input  wire [5:0] p_contrib,
-    input  wire [5:0] i_contrib,
-    input  wire [5:0] d_contrib,
+    input  wire [5:0] K_p, K_i, K_d,
     output wire [5:0] u
     );
+    wire [5:0] p_contrib, i_contrib, d_contrib;
     
-    ProportionalMultiplier P_ins(
+    ProportionalMultiplier   P_ins(
         .clk(clk),
         .rst_n(rst_n),
         .ena(ena),
-        .K_p(K_p),
         .e(e),
+        .K_p(K_p),
         .p_contrib(p_contrib)
         );
-    Integrator             I_ins(
+    Integrator               I_ins(
         .clk(clk),
         .rst_n(rst_n),
         .ena(ena),
@@ -28,7 +27,7 @@ module PID(
         .K_i(K_i),
         .i_contrib(i_contrib)
         );
-    Differentiator         D_ins(
+    Differentiator           D_ins(
         .clk(clk),
         .rst_n(rst_n),
         .ena(ena),
