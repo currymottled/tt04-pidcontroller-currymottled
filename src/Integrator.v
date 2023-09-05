@@ -2,10 +2,10 @@
 
 
 module Integrator(
-    input            clk, rst_n, ena,
-    input      [5:0] e,
-    input      [5:0] K_i,
-    output     [5:0] i_contrib //Integral contribution.
+    input  wire       clk, rst_n, ena,
+    input  wire [5:0] e,
+    input  wire [5:0] K_i,
+    output wire [5:0] i_contrib //Integral contribution.
     );
     
 reg [5:0] e_sum; //Integral approximation.
@@ -29,6 +29,7 @@ reg [5:0] e_sum; //Integral approximation.
     );
     // Integrator Parameters
     always @(posedge clk) begin 
+        // Set e_sum for the next round.
         e_sum <= e_sum + e; 
     end   
     

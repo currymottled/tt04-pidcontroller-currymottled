@@ -1,10 +1,10 @@
 `timescale 1ns / 1ps
 
 module ProportionalMultiplier(
-    input            clk, rst_n, ena,
-    input      [5:0] e,
-    input      [5:0] K_p,
-    output     [5:0] p_contrib // Proportional contribution.
+    input  wire       clk, rst_n, ena,
+    input  wire [5:0] e,
+    input  wire [5:0] K_p,
+    output wire [5:0] p_contrib // Proportional contribution.
 );
     // Multiplication takes too much physical space.
     // Repeated addition takes too much file

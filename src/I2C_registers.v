@@ -16,15 +16,6 @@ module I2C_registers(
     parameter K_i_ADDRESS = 8'b0000_0001;
     parameter K_d_ADDRESS = 8'b0000_0010;
     
-    I2C_slave  Slave_Intake(
-        .clk(clk),
-        .rst_n(rst_n),
-        .ena(ena),
-        .reg_addr(reg_addr),
-        .update_value(update_value),
-        .read_value(read_value)
-    );
-    
     // Writing
     always @ (posedge clk) begin
         if (!rst_n) begin

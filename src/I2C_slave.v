@@ -12,7 +12,7 @@ module I2C_slave(
     
     reg       read_or_write; // This stores the read/write bit.
     reg [6:0] device_addr;
-    reg [2:0] addr_index, reg_index, data_index; // The indices are 7 bit (the MSB is the sixth).
+    reg [2:0] addr_index, reg_index, data_index; // The indices are 7-8 bit.
     
     parameter DEVICE_ADDRESS = 7'b0110_011; // A made up placeholder.
     parameter K_p_ADDRESS = 8'b0000_0000;
