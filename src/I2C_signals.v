@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
 /*
-This handles enables and out signals, mostly write enables for ACKs etc.
-on the negative edge of the clock.
+This handles enables and out signals, mostly write enables for ACKs etc.,
+on the negative edge of the interface clock.
 
 "Write" means "read in and write to a register", not "write to the master". 
 "Read" means "read out to the master".
@@ -43,16 +43,6 @@ module I2C_signals(
             SDA_ena <= 0;      
         end
     end
-    always @ (posedge SCL_in) begin
-        if (ena) begin
-            case(state)
-                READ: begin
-                    SDA_out <= read_value[data_index]; 
-                end
-            endcase
-        end 
-    end
-    
     // Signal Logic    
     always @ (negedge SCL_in) begin
         if (ena) begin
@@ -86,7 +76,8 @@ module I2C_signals(
                 end
                 READ: begin
                     // "Read" means "read out to the master".
-                    SDA_ena <= 1;     
+                    SDA_ena <= 1;  
+                    SDA_out <= read_value[data_index];    
                 end
                 READ_ACK: begin
                     // Enable writing to send the ACK.

@@ -6,8 +6,8 @@ module Differentiator(
     input  wire [5:0] K_d,
     output wire [5:0] d_contrib //Differentiator contribution.
     );
-    reg [5:0] e_prior; // More "history" values can be used for a better approximations.
-    reg [5:0] e_diff;    
+    reg signed [5:0] e_prior, e_diff; // More "history" values can be used for a better approximations.
+    
     
     // Multiplication takes too much physical space.
     // Repeated addition takes too much file
@@ -23,12 +23,12 @@ module Differentiator(
 
     always @(posedge clk) begin
         if (!rst_n) begin
-            e_prior      <= 0;
-            e_diff       <= 0;
+            e_prior <= 0;
+            e_diff  <= 0;
         end else begin
         if (ena) begin
             // Set the error parameters for the next round.
-            e_diff <= e - e_prior;
+            e_diff <= $signed(e) - e_prior;
             e_prior <= e;
         end
     end

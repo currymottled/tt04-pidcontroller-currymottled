@@ -47,7 +47,7 @@ module tt_um_currymottled
     assign uio_oe [1:0] = {SDA_ena, SCL_ena};    
     // PID - Read when clk is high, write when clk is low. 
     assign uio_oe [7:2] = clk ? 6'b00_0000 : 6'b11_1111;
-    assign uio_in [7:2] = clk ? e[5:0] : 6'bZ;
+    assign e[5:0] = clk ? 6'bZ : uio_in [7:2];
     assign uio_out[7:2] = clk ? 6'bZ : u[5:0];
     
 endmodule
