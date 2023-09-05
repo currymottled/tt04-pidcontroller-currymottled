@@ -1,54 +1,38 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 08/23/2023 12:29:31 PM
-// Design Name: 
-// Module Name: Differentiator
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
-
 
 module Differentiator(
-    input            clk,
-    input            rst_n,
-    input            ena,
+    input            clk, rst_n, ena,
     input      [5:0] e,
     input      [5:0] K_d,
-    output reg [5:0] d_contrib //Differentiator contribution.
+    output     [5:0] d_contrib //Differentiator contribution.
     );
-reg [5:0] e_prior; //Last value. More values can be used for a better approximations.
-reg [5:0] i;       //Loop index for repeated addition.
-// Reset
-always @(posedge clk) begin
-    if (!rst_n) begin
-        e_prior      <= 0;
-        d_contrib    <= 0;
-    end 
-end
-// Integrator
-always @(posedge clk) begin
-    if (ena) begin
-        //Loop for multiplying e - e_prior by K_d.
-        if(i < K_d) begin
-            d_contrib <= d_contrib + e - e_prior;
-            i <= i+1;
-        end
-        //Reset the loop index.
-        else begin 
-            i <= 0; 
-        end
+    reg [5:0] e_prior; // More "history" values can be used for a better approximations.
+    reg [5:0] e_diff;
+    reg [5:0] i;       
+    // Reset
+    always @(posedge clk) begin
+        if (!rst_n) begin
+            e_prior      <= 0;
+            e_diff       <= 0;
+        end 
     end
-end   
+    // Multiplication takes too much physical space.
+    // Repeated addition takes too much file
+    // space, therefore it's written elsewhere.
+    RepeatedAdder K_d_repadder(
+        .clk(clk),
+        .rst_n(rst_n),
+        .ena(ena),
+        .a(e_diff),
+        .b(K_d),
+        .a_times_b(d_contrib)
+    );
+
+    // Differentiator parameters:
+    always @(posedge clk) begin
+        if (ena) begin
+            e_diff <= e - e_prior;
+            e_prior <= e;
+        end
+    end   
 endmodule

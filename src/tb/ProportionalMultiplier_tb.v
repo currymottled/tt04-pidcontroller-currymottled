@@ -3,9 +3,9 @@
 module ProportionalMultiplier_tb;
 reg clk, rst_n, ena;
 //Error and integral constant.
-reg e, K_p;
+reg [5:0] e, K_p;
 //Adjustment contribution to the control.
-wire i_contrib;
+wire [5:0] p_contrib;
 
 ProportionalMultiplier uut(
     .clk(clk),
@@ -26,8 +26,10 @@ initial begin
     #100 K_p = 2;
     #100 K_p = 4;
     #100 K_p = 8; 
-    #100 K_p = 16; 
+//    #100 K_p = 16;
+    
+    $stop;
+    // 
 end
-
 
 endmodule

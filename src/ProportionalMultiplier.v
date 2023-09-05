@@ -1,31 +1,20 @@
 `timescale 1ns / 1ps
 
 module ProportionalMultiplier(
-    input            clk,
-    input            rst_n,
-    input            ena,
+    input            clk, rst_n, ena,
     input      [5:0] e,
     input      [5:0] K_p,
-    output reg [5:0] p_contrib //Proprotional contribution.
+    output     [5:0] p_contrib // Proportional contribution.
+);
+    // Multiplication takes too much physical space.
+    // Repeated addition takes too much file
+    // space, therefore it's written elsewhere.
+    RepeatedAdder K_p_repadder(
+        .clk(clk),
+        .rst_n(rst_n),
+        .ena(ena),
+        .a(e),
+        .b(K_p),
+        .a_times_b(p_contrib)
     );
-reg [5:0] i; //Loop index for repeated addition.
-
-//Reset
-always @(posedge clk) begin
-    if (!rst_n) 
-        begin
-            p_contrib <= 0;
-        end 
-end
-//Repeated addition of the error by K_p. 
-always @(posedge clk) begin    
-    if (ena) begin
-        if(i < K_p)
- begin
-            p_contrib <= p_contrib + e; 
-            i <= i+1;
-        end
-        else i <= 0;
-    end
-end 
 endmodule
