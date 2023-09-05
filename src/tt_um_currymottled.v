@@ -49,5 +49,8 @@ module tt_um_currymottled
     assign uio_oe [7:2] = clk ? 6'b00_0000 : 6'b11_1111;
     assign e[5:0] = clk ? 6'bZ : uio_in [7:2];
     assign uio_out[7:2] = clk ? 6'bZ : u[5:0];
-    
+    // Seven Segment - Unused
+    always @ (posedge clk) begin
+        uo_out[7:0] <= 7'b0; 
+    end
 endmodule

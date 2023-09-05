@@ -17,7 +17,7 @@ module I2C_signals(
     output reg        SCL_out, SDA_out, 
     output reg        SCL_ena, SDA_ena // These are connected to the enable path of the chip.
     );
-    
+
         // State Parameters
     localparam IDLE          = 0;
 	localparam START         = 1;
@@ -41,54 +41,56 @@ module I2C_signals(
             SDA_out <= 0;
             SCL_ena <= 0;
             SDA_ena <= 0;      
-        end
-    end
-    // Signal Logic    
-    always @ (negedge SCL_in) begin
+        end else begin
         if (ena) begin
-            case(state)         
-                START: begin
-                    // Set SDA to input to read the start bit.
-                    SDA_ena <= 0;
-                end            
-                ADDR_ACK: begin
-                    // Send the ACK.
-                    SDA_ena <= 1;
-                    SDA_out <= 0; 
-                end
-                READ_OR_WRITE: begin
-                    // Set SDA to input to read the read_or_write bit.
-                    SDA_ena <= 0;
-                end
-                REG_ACK: begin
-                    // Send the ACK.
-                    SDA_ena <= 1;
-                    SDA_out <= 0; 
-                end
-                WRITE: begin
-                    // "Write" means "read in and write to a register", not "write to the master". 
-                    SDA_ena <= 0;
-                end              
-                WRITE_ACK: begin
-                    // Eable writing to send the ACK.
-                    SDA_ena <= 1;
-                    SDA_out <= 0;    
-                end
-                READ: begin
-                    // "Read" means "read out to the master".
-                    SDA_ena <= 1;  
-                    SDA_out <= read_value[data_index];    
-                end
-                READ_ACK: begin
-                    // Enable writing to send the ACK.
-                    SDA_ena <= 1;
-                    SDA_out <= 0;
-                end              
-                STOP: begin
-                    // Set SDA to input to read the stop bit.
-                    SDA_ena <= 0;
-                end              
-           endcase
-        end
+            // Signal handling is all done on the negative half-cycle.
+            if (SCL_in == 0) begin
+            // Signal Logic   
+                case(state)         
+                    START: begin
+                        // Set SDA to input to read the start bit.
+                        SDA_ena <= 0;
+                    end            
+                    ADDR_ACK: begin
+                        // Send the ACK.
+                        SDA_ena <= 1;
+                        SDA_out <= 0; 
+                    end
+                    READ_OR_WRITE: begin
+                        // Set SDA to input to read the read_or_write bit.
+                        SDA_ena <= 0;
+                    end
+                    REG_ACK: begin
+                        // Send the ACK.
+                        SDA_ena <= 1;
+                        SDA_out <= 0; 
+                    end
+                    WRITE: begin
+                        // "Write" means "read in and write to a register", not "write to the master". 
+                        SDA_ena <= 0;
+                    end              
+                    WRITE_ACK: begin
+                        // Eable writing to send the ACK.
+                        SDA_ena <= 1;
+                        SDA_out <= 0;    
+                    end
+                    READ: begin
+                        // "Read" means "read out to the master".
+                        SDA_ena <= 1;  
+                        SDA_out <= read_value[data_index];    
+                    end
+                    READ_ACK: begin
+                        // Enable writing to send the ACK.
+                        SDA_ena <= 1;
+                        SDA_out <= 0;
+                    end              
+                    STOP: begin
+                        // Set SDA to input to read the stop bit.
+                        SDA_ena <= 0;
+                    end              
+                endcase
+             end
+          end
+       end
     end
 endmodule
