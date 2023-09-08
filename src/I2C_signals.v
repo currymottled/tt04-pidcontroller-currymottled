@@ -11,13 +11,14 @@ on the negative edge of the interface clock.
 module I2C_signals(
     input             clk, rst_n, ena,
     input  wire [4:0] state,
-    input  wire [5:0] read_value,
+    input  wire [7:0] read_value,
     input  wire [2:0] data_index,
     input  wire       SCL_in,
     output reg        SCL_out, SDA_out, 
     output reg        SCL_ena, SDA_ena // These are connected to the enable path of the chip.
     );
-
+    reg SCL_prev; // This stores the previous SCL to avoid "race conditions".
+    
         // State Parameters
     localparam IDLE          = 0;
 	localparam START         = 1;
@@ -43,8 +44,10 @@ module I2C_signals(
             SDA_ena <= 0;      
         end else begin
         if (ena) begin
+            // Edge detect
+            SCL_prev <= SCL_in;
             // Signal handling is all done on the negative half-cycle.
-            if (SCL_in == 0) begin
+            if (SCL_in == 0 && SCL_prev == 1) begin
             // Signal Logic   
                 case(state)         
                     START: begin

@@ -29,49 +29,21 @@ yaml_version: 4
 #
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
-  author:       "currymottled"      # Your name
+  author:       "Maxim Vasic"      # Your name
   title:        "ENEL 453 Final Project"      # Project title
-  language:     "Wokwi" # other examples include Verilog, Amaranth, VHDL, etc
-  description:  "Final Project in lue of labs"      # Short description of what your project does
+  language:     "Verilog" # other examples include Verilog, Amaranth, VHDL, etc
+  description:  "This was meant to be a final project but that was undercut. It's a PID control block to be set with I2C. GPIOs 7 through 2 are for error input and control output, GPIOs 1 and 0 and for SDA and SCL."
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      Explain how your project works
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
-  how_to_test:  |
-      Explain how to test your project
+  how_to_test: "The I2C 'addresses' are written in the I2C_config_param.v subfiles (e.g. in the slave). The main I2C testbench has an example for what to send to configure PID constants."
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
-  inputs:               
-    - none
-    - none
-    - none
-    - none
-    - none
-    - none
-    - none
-    - none
-# A description of what the outputs do (e.g. status LED, SPI MISO, etc)
-  outputs:
-    - segment a
-    - segment b
-    - segment c
-    - segment d
-    - segment e
-    - segment f
-    - segment g
-    - dot
-# A description of what the bidirectional I/O pins do (e.g. I2C SDA, I2C SCL, etc)
-  bidirectional:
-    - none
-    - none
-    - none
-    - none
-    - none
-    - none
-    - none
-    - none
+  bidirectional:               
+    - GPIO[7:2] - Error Input/Control Output
+    - GPIO[1:0] - I2C for changing PID constants. GPIO[1] is SDA, GPIO[0] is SCL.
 
 # The following fields are optional
   tag:          ""      # comma separated list of tags: test, encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,
