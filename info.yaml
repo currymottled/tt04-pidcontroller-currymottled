@@ -35,10 +35,12 @@ documentation:
   description:  "This was meant to be a final project but that was undercut."
 
 # Longer description of how the project works. You can use standard markdown format.
-  how_it_works: "It's a PID control block to be set with I2C. GPIOs 7 through 2 are for error input and control output, GPIOs 1 and 0 and for SDA and SCL."
+  how_it_works: |
+	It's a PID control block to be set with I2C. GPIOs 7 through 2 are for error input and control output, GPIOs 1 and 0 and for SDA and SCL.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
-  how_to_test: "The I2C 'addresses' are written in the I2C_config_param.v subfiles (e.g. in the slave). The main I2C testbench has an example for what to send to configure PID constants."
+  how_to_test: |
+	The I2C 'addresses' are written in the I2C_config_param.v subfiles (e.g. in the slave). The main I2C testbench has an example for what to send to configure PID constants.
 
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
   bidirectional:               
