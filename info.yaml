@@ -2,7 +2,6 @@
 # TinyTapeout project information
 project:
   wokwi_id:    0        # If using wokwi, set this to your project's ID
-
 # If using an HDL, set wokwi_id as 0 and uncomment and list your source files here. 
 # Source files must be in ./src and you must list each source file separately
   source_files:        
@@ -17,38 +16,55 @@ project:
     - I2C_slave.v
     - I2C_signals.v
   top_module:  "tt_um_currymottled"      # Put the name of your top module here, must start with "tt_um_". Make it unique by including your github username
-
 # How many tiles your design occupies? A single tile is about 167x108 uM.
   tiles: "1x1"    # Valid values: 1x1, 1x2, 2x2, 4x2 or 8x2
-
 # Keep a track of the submission yaml
 yaml_version: 4
-
 # As everyone will have access to all designs, try to make it easy for someone new to your design to know what
 # it does and how to operate it. This info will be automatically collected and used to make a datasheet for the chip.
 #
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
-  author:       "Maxim Vasic"      # Your name
-  title:        "ENEL 453 Final Project"      # Project title
-  language:     "Verilog" # other examples include Verilog, Amaranth, VHDL, etc
-  description:  "This was meant to be a final project but that was undercut."
-
-# Longer description of how the project works. You can use standard markdown format.
-  how_it_works: |
-	It's a PID control block to be set with I2C. GPIOs 7 through 2 are for error input and control output, GPIOs 1 and 0 and for SDA and SCL.
-
-# Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
-  how_to_test: |
+    author:       "Maxim Vasic"      # Your name 
+    title:        "Configurable PID Block"
+    language:     "Verilog" # other examples include Verilog, Amaranth, VHDL, etc
+    description:  "This was meant to be a final project but that was undercut."
+    how_it_works: |
+        It's a PID control block to be set with I2C. GPIOs 7 through 2 are for error input and control output, GPIOs 1 and 0 and for SDA and SCL.
+    how_to_test:  |
 	The I2C 'addresses' are written in the I2C_config_param.v subfiles (e.g. in the slave). The main I2C testbench has an example for what to send to configure PID constants.
-
 # A description of what the inputs do (e.g. red button, SPI CLK, SPI MOSI, etc).
-  bidirectional:               
-    - GPIO[7:2] - Error Input/Control Output
-    - GPIO[1:0] - I2C for changing PID constants. GPIO[1] is SDA, GPIO[0] is SCL.
-
+  inputs:               
+    - none
+    - none
+    - none
+    - none
+    - none
+    - none
+    - none
+    - none
+# A description of what the outputs do (e.g. status LED, SPI MISO, etc)
+  outputs:
+    - segment a
+    - segment b
+    - segment c
+    - segment d
+    - segment e
+    - segment f
+    - segment g
+    - dot
+# A description of what the bidirectional I/O pins do (e.g. I2C SDA, I2C SCL, etc)
+  bidirectional:
+    - Error/Control
+    - Error/Control
+    - Error/Control
+    - Error/Control
+    - Error/Control
+    - Error/Control
+    - SDA
+    - SCL
 # The following fields are optional
-  tag:          ""      # comma separated list of tags: test, encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,
+  tag:          ""      # comma separated tags
   external_hw:  ""      # Describe any external hardware needed
   discord:      ""      # Your discord handle, used for communication and automatically assigning tapeout role after a submission
   doc_link:     ""      # URL to longer form documentation, eg the README.md in your repository
